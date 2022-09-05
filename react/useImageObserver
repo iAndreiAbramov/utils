@@ -1,0 +1,33 @@
+import { RefObject, useEffect } from 'react';
+
+export const useImageObserver = ({
+  ref,
+  cb,
+  rootRef,
+}: {
+  rootRef: RefObject<HTMLDivElement>;
+  ref: RefObject<HTMLImageElement>;
+  cb: (ref: RefObject<HTMLImageElement>) => void;
+}): void => {
+  const intersectionObserver = new IntersectionObserver(
+    (entries, observer) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        cb(ref);
+        if (ref?.current) {
+          observer.unobserve(ref.current);
+        }
+      }
+    },
+    {
+      root: rootRef.current,
+      rootMargin: '100%',
+    },
+  );
+
+  useEffect(() => {
+    if (ref?.current) {
+      intersectionObserver.observe(ref.current);
+    }
+  });
+};
