@@ -1,7 +1,4 @@
-
-
 export const useOverflow = (isPopupShown: boolean): void => {
-    const header: HTMLDivElement | null = document.querySelector('.header-container');
     if (isPopupShown) {
         const div = document.createElement('div');
         div.style.overflowY = 'scroll';
